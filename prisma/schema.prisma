@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String    @id
+  name        String
+  email       String    @unique
+  password_hash String
+  created_at  DateTime  @default(now())
+
+  @@map("users")
+}
+
+model Patient {
+  id          String    @id
+  name        String
+  date_of_birth DateTime
+  gender      String
+  contact     String
+  address     String?
+  created_at  DateTime  @default(now())
+
+  patient_teeth PatientTooth[]
+  treatments    Treatment[]
+  dental_records DentalRecord[]
+
+  @@map("patients")
+}
+
+model Tooth {
+  id          Int       @id
+  name        String
+  quadrant    String
+
+  patient_teeth PatientTooth[]
+  treatment_teeth TreatmentTooth[]
+  dental_records DentalRecord[]
+
+  @@map("teeth")
+}
+
+model PatientTooth {
+  patient_id String
+  tooth_id   Int
+  status     String
+
+  patient Patient @relation(fields: [patient_id], references: [id])
+  tooth   Tooth   @relation(fields: [tooth_id], references: [id])
+
+  @@id([patient_id, tooth_id])
+  @@map("patient_teeth")
+}
+
+model Treatment {
+  id          String    @id
+  patient_id  String
+  date        DateTime
+  procedure   String
+  notes       String?
+  cost        Float?
+  created_at  DateTime  @default(now())
+
+  patient Patient @relation(fields: [patient_id], references: [id])
+  treatment_teeth TreatmentTooth[]
+
+  @@map("treatments")
+}
+
+model TreatmentTooth {
+  treatment_id String
+  tooth_id     Int
+
+  treatment Treatment @relation(fields: [treatment_id], references: [id])
+  tooth     Tooth     @relation(fields: [tooth_id], references: [id])
+
+  @@id([treatment_id, tooth_id])
+  @@map("treatment_teeth")
+}
+
+model DentalRecord {
+  id            String    @id
+  patient_id    String
+  tooth_number  Int
+  treatment_date DateTime
+  description   String
+  treatment_type String
+  created_at    DateTime  @default(now())
+
+  patient Patient @relation(fields: [patient_id], references: [id])
+  tooth   Tooth   @relation(fields: [tooth_number], references: [id])
+
+  @@map("dental_records")
+}
