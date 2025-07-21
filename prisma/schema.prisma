@@ -3,7 +3,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -100,4 +99,20 @@ model DentalRecord {
   tooth   Tooth   @relation(fields: [tooth_number], references: [id])
 
   @@map("dental_records")
+}
+
+model Appointment {
+  id        Int      @id @default(autoincrement())
+  day       Int
+  hour      Int
+  patient   String
+  note      String
+  status    String
+}
+
+model Queue {
+  id      Int    @id @default(autoincrement())
+  patient String
+  note    String
+  status  String
 }
