@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(JSON.stringify({ message: 'Email, password, and name are required' }), {
       status: 400,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       }
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       return new NextResponse(JSON.stringify({ message: 'User already exists' }), {
         status: 409,
         headers: {
-          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
           'Access-Control-Allow-Methods': 'POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         }
@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(JSON.stringify({ message: 'User registered successfully', user: userWithoutPassword }), {
       status: 201,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       }
@@ -56,7 +56,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(JSON.stringify({ message: 'Internal server error' }), {
       status: 500,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       }
@@ -68,7 +68,7 @@ export async function OPTIONS(req: NextRequest) {
   return new NextResponse(null, {
     status: 200,
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },

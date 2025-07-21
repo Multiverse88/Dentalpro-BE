@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(JSON.stringify({ message: 'Email and password are required' }), {
       status: 400,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       }
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       return new NextResponse(JSON.stringify({ message: 'Invalid credentials' }), {
         status: 401,
         headers: {
-          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
           'Access-Control-Allow-Methods': 'POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         }
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       return new NextResponse(JSON.stringify({ message: 'Invalid credentials' }), {
         status: 401,
         headers: {
-          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
           'Access-Control-Allow-Methods': 'POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         }
@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(JSON.stringify({ token, user: userWithoutPassword }), {
       status: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       }
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
     return new NextResponse(JSON.stringify({ message: 'Internal server error' }), {
       status: 500,
       headers: {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
       }
@@ -77,7 +77,7 @@ export async function OPTIONS(req: NextRequest) {
   return new NextResponse(null, {
     status: 200,
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
       'Access-Control-Allow-Methods': 'POST, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },

@@ -17,7 +17,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     return new NextResponse(JSON.stringify({ message: 'Missing required treatment fields' }), {
       status: 400,
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app'
       }
     });
   }
@@ -39,7 +39,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
       return new NextResponse(JSON.stringify({ message: 'Treatment not found' }), {
         status: 404,
         headers: {
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app'
         }
       });
     }
@@ -57,7 +57,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     return new NextResponse(JSON.stringify({ ...updatedTreatment, toothIds }), {
       status: 200,
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app'
       }
     });
   } catch (error) {
@@ -65,7 +65,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     return new NextResponse(JSON.stringify({ message: 'Internal server error' }), {
       status: 500,
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app'
       }
     });
   }
@@ -86,7 +86,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
       return new NextResponse(JSON.stringify({ message: 'Treatment not found' }), {
         status: 404,
         headers: {
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app'
         }
       });
     }
@@ -94,7 +94,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return new NextResponse(JSON.stringify({ message: 'Treatment deleted successfully' }), {
       status: 204,
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app'
       }
     });
   } catch (error) {
@@ -102,7 +102,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
     return new NextResponse(JSON.stringify({ message: 'Internal server error' }), {
       status: 500,
       headers: {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app'
       }
     });
   }
@@ -112,7 +112,7 @@ export async function OPTIONS(req: NextRequest) {
   return new NextResponse(null, {
     status: 200,
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
       'Access-Control-Allow-Methods': 'PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },

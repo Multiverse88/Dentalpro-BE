@@ -5,7 +5,7 @@ export async function GET() {
   const appointments = await prisma.appointment.findMany();
   return NextResponse.json(appointments, {
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
   return NextResponse.json(appt, {
     status: 201,
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
@@ -31,7 +31,7 @@ export async function PUT(req: NextRequest) {
   const appt = await prisma.appointment.update({ where: { id: Number(id) }, data: rest });
   return NextResponse.json(appt, {
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
@@ -44,7 +44,7 @@ export async function DELETE(req: NextRequest) {
   const appt = await prisma.appointment.delete({ where: { id } });
   return NextResponse.json(appt, {
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
@@ -55,7 +55,7 @@ export async function OPTIONS(req: NextRequest) {
   return new NextResponse(null, {
     status: 200,
     headers: {
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
       'Access-Control-Allow-Headers': 'Content-Type, Authorization',
     },
