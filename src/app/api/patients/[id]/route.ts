@@ -3,7 +3,7 @@ import prisma from '@/db/prisma';
 
 import { authMiddleware, AuthenticatedRequest } from '@/middleware/auth';
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: any) {
   const authResult = await authMiddleware(req as AuthenticatedRequest);
   if (authResult instanceof NextResponse) {
     return authResult; // Authentication failed
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 
   try {
     const patient = await prisma.patient.findUnique({
-      where: { id: Number(id) },
+      where: { id: (id) },
       include: {
         patient_teeth: {
           include: {
@@ -73,7 +73,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: any) {
   const authResult = await authMiddleware(req as AuthenticatedRequest);
   if (authResult instanceof NextResponse) {
     return authResult; // Authentication failed
@@ -92,7 +92,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     };
 
     await prisma.patient.update({
-      where: { id: Number(id) },
+      where: { id: (id) },
       data: patientToUpdate,
     });
 
@@ -100,7 +100,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
     if (updatedPatientData.teeth && Array.isArray(updatedPatientData.teeth)) {
       for (const tooth of updatedPatientData.teeth) {
         await prisma.patientTooth.update({
-          where: { patient_id_tooth_id: { patient_id: Number(id), tooth_id: tooth.id } },
+          where: { patient_id_tooth_id: { patient_id: (id), tooth_id: tooth.id } },
           data: { status: tooth.status },
         });
       }
@@ -121,7 +121,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: any) {
   const authResult = await authMiddleware(req as AuthenticatedRequest);
   if (authResult instanceof NextResponse) {
     return authResult; // Authentication failed
@@ -130,7 +130,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
   const { id } = params;
 
   try {
-    const deletedTreatment = await prisma.treatment.delete({ where: { id: Number(id) } });
+    const deletedTreatment = await prisma.treatment.delete({ where: { id: (id) } });
 
     if (!deletedTreatment) {
       return new NextResponse(JSON.stringify({ message: 'Patient not found' }), {
