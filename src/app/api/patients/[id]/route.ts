@@ -13,7 +13,7 @@ export async function GET(req: NextRequest, { params }: any) {
 
   try {
     const patient = await prisma.patient.findUnique({
-      where: { id: (id) },
+      where: { id },
       include: {
         patient_teeth: {
           include: {
@@ -92,7 +92,7 @@ export async function PUT(req: NextRequest, { params }: any) {
     };
 
     await prisma.patient.update({
-      where: { id: (id) },
+      where: { id },
       data: patientToUpdate,
     });
 
@@ -100,7 +100,7 @@ export async function PUT(req: NextRequest, { params }: any) {
     if (updatedPatientData.teeth && Array.isArray(updatedPatientData.teeth)) {
       for (const tooth of updatedPatientData.teeth) {
         await prisma.patientTooth.update({
-          where: { patient_id_tooth_id: { patient_id: (id), tooth_id: tooth.id } },
+          where: { patient_id_tooth_id: { patient_id: id, tooth_id: tooth.id } },
           data: { status: tooth.status },
         });
       }
@@ -130,7 +130,7 @@ export async function DELETE(req: NextRequest, { params }: any) {
   const { id } = params;
 
   try {
-    const deletedTreatment = await prisma.treatment.delete({ where: { id: (id) } });
+    const deletedTreatment = await prisma.treatment.delete({ where: { id } });
 
     if (!deletedTreatment) {
       return new NextResponse(JSON.stringify({ message: 'Patient not found' }), {
