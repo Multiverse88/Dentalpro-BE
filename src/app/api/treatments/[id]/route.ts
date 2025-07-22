@@ -3,7 +3,7 @@ import prisma from '@/db/prisma';
 
 import { authMiddleware, AuthenticatedRequest } from '@/middleware/auth';
 
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: any) {
   const authResult = await authMiddleware(req as AuthenticatedRequest);
   if (authResult instanceof NextResponse) {
     return authResult; // Authentication failed
@@ -71,7 +71,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: any) {
   const authResult = await authMiddleware(req as AuthenticatedRequest);
   if (authResult instanceof NextResponse) {
     return authResult; // Authentication failed
