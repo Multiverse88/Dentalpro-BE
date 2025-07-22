@@ -3,18 +3,17 @@ import prisma from '@/db/prisma';
 
 import { authMiddleware, AuthenticatedRequest } from '@/middleware/auth';
 
-export async function GET(req: NextRequest, context: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   const authResult = await authMiddleware(req as AuthenticatedRequest);
   if (authResult instanceof NextResponse) {
     return authResult; // Authentication failed
   }
 
-  const { params } = await context;
   const { id } = params;
 
   try {
     const patient = await prisma.patient.findUnique({
-      where: { id },
+      where: { id: Number(id) },
       include: {
         patient_teeth: {
           include: {
@@ -74,13 +73,12 @@ export async function GET(req: NextRequest, context: { params: { id: string } })
   }
 }
 
-export async function PUT(req: NextRequest, context: { params: { id: string } }) {
+export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
   const authResult = await authMiddleware(req as AuthenticatedRequest);
   if (authResult instanceof NextResponse) {
     return authResult; // Authentication failed
   }
 
-  const { params } = await context;
   const { id } = params;
   const updatedPatientData = await req.json();
 
@@ -94,7 +92,7 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
     };
 
     await prisma.patient.update({
-      where: { id },
+      where: { id: Number(id) },
       data: patientToUpdate,
     });
 
@@ -102,14 +100,14 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
     if (updatedPatientData.teeth && Array.isArray(updatedPatientData.teeth)) {
       for (const tooth of updatedPatientData.teeth) {
         await prisma.patientTooth.update({
-          where: { patient_id_tooth_id: { patient_id: id, tooth_id: tooth.id } },
+          where: { patient_id_tooth_id: { patient_id: Number(id), tooth_id: tooth.id } },
           data: { status: tooth.status },
         });
       }
     }
 
     // Re-fetch the updated patient with all details
-    const updatedPatient = await GET(req, context);
+    const updatedPatient = await GET(req, { params });
     return updatedPatient;
 
   } catch (error) {
@@ -123,17 +121,16 @@ export async function PUT(req: NextRequest, context: { params: { id: string } })
   }
 }
 
-export async function DELETE(req: NextRequest, context: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   const authResult = await authMiddleware(req as AuthenticatedRequest);
   if (authResult instanceof NextResponse) {
     return authResult; // Authentication failed
   }
 
-  const { params } = await context;
   const { id } = params;
 
   try {
-    const deletedTreatment = await prisma.treatment.delete({ where: { id } });
+    const deletedTreatment = await prisma.treatment.delete({ where: { id: Number(id) } });
 
     if (!deletedTreatment) {
       return new NextResponse(JSON.stringify({ message: 'Patient not found' }), {
