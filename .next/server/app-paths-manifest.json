@@ -1,4 +1,1 @@
-{
-  "/api/patients/route": "app/api/patients/route.js",
-  "/api/auth/login/route": "app/api/auth/login/route.js"
-}
+{}
