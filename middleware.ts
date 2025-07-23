@@ -1,6 +1,12 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+const allowedOrigins = [
+  'https://dentalpro-ten.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:3000'
+];
+
 export function middleware(request: NextRequest) {
   const origin = request.headers.get('origin');
   const response = NextResponse.next();
@@ -21,4 +27,4 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   matcher: '/api/:path*',
-}; 
+};
