@@ -5,7 +5,23 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import prisma from '@/db/prisma';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwtkey'; // Use environment variable in production
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwtkey';
+
+const allowedOrigins = [
+  'https://dentalpro-ten.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:3000'
+];
+
+function corsHeaders(request: NextRequest) {
+  const origin = request.headers.get('origin');
+  return {
+    'Access-Control-Allow-Origin': origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0],
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true'
+  };
+}
 
 export async function POST(req: NextRequest) {
   const { email, password } = await req.json();
@@ -13,11 +29,7 @@ export async function POST(req: NextRequest) {
   if (!email || !password) {
     return new NextResponse(JSON.stringify({ message: 'Email and password are required' }), {
       status: 400,
-      headers: {
-        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      }
+      headers: corsHeaders(req)
     });
   }
 
@@ -27,11 +39,7 @@ export async function POST(req: NextRequest) {
     if (!user) {
       return new NextResponse(JSON.stringify({ message: 'Invalid credentials' }), {
         status: 401,
-        headers: {
-          'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        }
+        headers: corsHeaders(req)
       });
     }
 
@@ -40,11 +48,7 @@ export async function POST(req: NextRequest) {
     if (!isPasswordValid) {
       return new NextResponse(JSON.stringify({ message: 'Invalid credentials' }), {
         status: 401,
-        headers: {
-          'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-        }
+        headers: corsHeaders(req)
       });
     }
 
@@ -54,21 +58,13 @@ export async function POST(req: NextRequest) {
 
     return new NextResponse(JSON.stringify({ token, user: userWithoutPassword }), {
       status: 200,
-      headers: {
-        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      }
+      headers: corsHeaders(req)
     });
   } catch (error) {
     console.error('Login error:', error);
     return new NextResponse(JSON.stringify({ message: 'Internal server error' }), {
       status: 500,
-      headers: {
-        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      }
+      headers: corsHeaders(req)
     });
   }
 }
@@ -76,10 +72,6 @@ export async function POST(req: NextRequest) {
 export async function OPTIONS(req: NextRequest) {
   return new NextResponse(null, {
     status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    },
+    headers: corsHeaders(req)
   });
 }

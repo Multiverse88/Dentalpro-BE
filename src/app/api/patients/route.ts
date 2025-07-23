@@ -11,6 +11,22 @@ enum ToothStatus {
 }
 import { authMiddleware } from '@/middleware/auth';
 
+const allowedOrigins = [
+  'https://dentalpro-ten.vercel.app',
+  'http://localhost:5173',
+  'http://localhost:3000'
+];
+
+function corsHeaders(request: NextRequest) {
+  const origin = request.headers.get('origin');
+  return {
+    'Access-Control-Allow-Origin': origin && allowedOrigins.includes(origin) ? origin : allowedOrigins[0],
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Credentials': 'true'
+  };
+}
+
 export async function GET(req: NextRequest) {
   const authResult = await authMiddleware(req);
   if (authResult instanceof NextResponse) {
@@ -65,9 +81,8 @@ export async function GET(req: NextRequest) {
     return new NextResponse(JSON.stringify(patientsWithDetails), {
       status: 200,
       headers: {
-        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        ...corsHeaders(req),
+        'Content-Type': 'application/json',
       }
     });
   } catch (error) {
@@ -78,11 +93,7 @@ export async function GET(req: NextRequest) {
       stack: error instanceof Error ? error.stack : undefined,
     }), {
       status: 500,
-      headers: {
-        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      }
+      headers: corsHeaders(req),
     });
   }
 }
@@ -104,11 +115,7 @@ export async function POST(req: NextRequest) {
       error: 'date_of_birth is invalid',
     }), {
       status: 400,
-      headers: {
-        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      }
+      headers: corsHeaders(req),
     });
   }
   try {
@@ -143,9 +150,8 @@ export async function POST(req: NextRequest) {
     return new NextResponse(JSON.stringify(newPatient), {
       status: 201,
       headers: {
-        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        ...corsHeaders(req),
+        'Content-Type': 'application/json',
       }
     });
   } catch (error) {
@@ -157,11 +163,7 @@ export async function POST(req: NextRequest) {
       raw: error,
     }), {
       status: 500,
-      headers: {
-        'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
-        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-      }
+      headers: corsHeaders(req),
     });
   }
 }
@@ -169,10 +171,6 @@ export async function POST(req: NextRequest) {
 export async function OPTIONS(req: NextRequest) {
   return new NextResponse(null, {
     status: 200,
-    headers: {
-      'Access-Control-Allow-Origin': 'https://dentalpro-ten.vercel.app',
-      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    },
+    headers: corsHeaders(req),
   });
 }
